@@ -1,6 +1,7 @@
 package livr.Rules;
 
 import com.google.common.collect.Lists;
+import kotlin.jvm.functions.Function1;
 import livr.FunctionKeeper;
 import livr.LIVRUtils;
 import livr.Validator;
@@ -16,11 +17,11 @@ import java.util.function.Function;
  * Created by vladislavbaluk on 9/28/2017.
  */
 public class Meta {
-    public static Function<List<Object>, Function> nested_object = (List<Object> objects) -> {
+    public static Function1<List<Object>, Function1> nested_object = (List<Object> objects) -> {
         try {
-            Validator validator = new Validator((Map<String, Function>) objects.get(1)).init((JSONObject) objects.get(0), false).prepare();
+            Validator validator = new Validator((Map<String, Function1>) objects.get(1)).init((JSONObject) objects.get(0), false).prepare();
 
-            return (Function<FunctionKeeper, Object>) (wrapper) -> {
+            return (Function1<FunctionKeeper, Object>) (wrapper) -> {
                 if (LIVRUtils.isNoValue(wrapper.getValue())) return "";
                 if (!LIVRUtils.isObject(wrapper.getValue())) return "FORMAT_ERROR";
 
@@ -44,7 +45,7 @@ public class Meta {
         return null;
     };
 
-    public static Function<List<Object>, Function> list_of = (List<Object> objects) -> {
+    public static Function1<List<Object>, Function1> list_of = (List<Object> objects) -> {
         try {
             JSONObject field = new JSONObject();
             JSONArray array = new JSONArray();
@@ -54,9 +55,9 @@ public class Meta {
             } else {
                 field.put("field", array);
             }
-            Validator validator = new Validator((Map<String, Function>) objects.get(1)).init(field, false).prepare();
+            Validator validator = new Validator((Map<String, Function1>) objects.get(1)).init(field, false).prepare();
 
-            return (Function<FunctionKeeper, Object>) (wrapper) -> {
+            return (Function1<FunctionKeeper, Object>) (wrapper) -> {
                 if (LIVRUtils.isNoValue(wrapper.getValue())) return "";
                 if (!(wrapper.getValue() instanceof JSONArray)) return "FORMAT_ERROR";
 
@@ -97,11 +98,11 @@ public class Meta {
         return null;
     };
 
-    public static Function<List<Object>, Function> list_of_objects = (List<Object> objects) -> {
+    public static Function1<List<Object>, Function1> list_of_objects = (List<Object> objects) -> {
         try {
-            Validator validator = new Validator((Map<String, Function>) objects.get(1)).init((JSONObject) objects.get(0), false).prepare();
+            Validator validator = new Validator((Map<String, Function1>) objects.get(1)).init((JSONObject) objects.get(0), false).prepare();
 
-            return (Function<FunctionKeeper, Object>) (wrapper) -> {
+            return (Function1<FunctionKeeper, Object>) (wrapper) -> {
                 if (LIVRUtils.isNoValue(wrapper.getValue())) return "";
                 if (!(wrapper.getValue() instanceof JSONArray)) return "FORMAT_ERROR";
 
@@ -145,7 +146,7 @@ public class Meta {
         return null;
     };
 
-    public static Function<List<Object>, Function> list_of_different_objects = (List<Object> objects) -> {
+    public static Function1<List<Object>, Function1> list_of_different_objects = (List<Object> objects) -> {
         try {
             Map<Object, Validator> validators = new HashMap<>();
             Iterator it = ((JSONArray) objects.get(0)).iterator();
@@ -154,14 +155,14 @@ public class Meta {
             for (Object key : values.keySet()) {
                 JSONObject selectorValue = (JSONObject) values.get(key);
 
-                Validator validator = new Validator((Map<String, Function>) objects.get(1)).init(selectorValue, false)
-                        .registerRules((Map<String, Function>) objects.get(1))
+                Validator validator = new Validator((Map<String, Function1>) objects.get(1)).init(selectorValue, false)
+                        .registerRules((Map<String, Function1>) objects.get(1))
                         .prepare();
 
                 validators.put(key, validator);
             }
 
-            return (Function<FunctionKeeper, Object>) (wrapper) -> {
+            return (Function1<FunctionKeeper, Object>) (wrapper) -> {
                 if (LIVRUtils.isNoValue(wrapper.getValue())) return "";
                 if (!(wrapper.getValue() instanceof JSONArray)) return "FORMAT_ERROR";
 
@@ -209,7 +210,7 @@ public class Meta {
     };
 
 
-    public static Function<List<Object>, Function> variable_object = (List<Object> objects) -> {
+    public static Function1<List<Object>, Function1> variable_object = (List<Object> objects) -> {
         try {
             Map<Object, Validator> validators = new HashMap<>();
             Iterator it = ((JSONArray) objects.get(0)).iterator();
@@ -218,14 +219,14 @@ public class Meta {
             for (Object key : values.keySet()) {
                 JSONObject selectorValue = (JSONObject) values.get(key);
 
-                Validator validator = new Validator((Map<String, Function>) objects.get(1)).init(selectorValue, false)
-                        .registerRules((Map<String, Function>) objects.get(1))
+                Validator validator = new Validator((Map<String, Function1>) objects.get(1)).init(selectorValue, false)
+                        .registerRules((Map<String, Function1>) objects.get(1))
                         .prepare();
 
                 validators.put(key, validator);
             }
 
-            return (Function<FunctionKeeper, Object>) (wrapper) -> {
+            return (Function1<FunctionKeeper, Object>) (wrapper) -> {
                 if (LIVRUtils.isNoValue(wrapper.getValue())) return "";
 
                 try {
@@ -256,17 +257,17 @@ public class Meta {
     };
 
 
-    public static Function<List<Object>, Function> or = (List<Object> objects) -> {
+    public static Function1<List<Object>, Function1> or = (List<Object> objects) -> {
         try {
             List<Validator> validators = new ArrayList<>();
             for (Object entry : ((JSONArray) objects.get(0)).toArray()) {
                 JSONObject field = new JSONObject();
                 field.put("field", entry);
-                Validator validator = new Validator((Map<String, Function>) objects.get(1)).init(field, false).prepare();
+                Validator validator = new Validator((Map<String, Function1>) objects.get(1)).init(field, false).prepare();
                 validators.add(validator);
             }
 
-            return (Function<FunctionKeeper, Object>) (wrapper) -> {
+            return (Function1<FunctionKeeper, Object>) (wrapper) -> {
                 if (LIVRUtils.isNoValue(wrapper.getValue())) return "";
                 try {
                     Object value = wrapper.getValue();

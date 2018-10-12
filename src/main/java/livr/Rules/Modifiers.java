@@ -1,5 +1,6 @@
 package livr.Rules;
 
+import kotlin.jvm.functions.Function1;
 import livr.FunctionKeeper;
 import livr.LIVRUtils;
 import org.json.simple.JSONObject;
@@ -13,9 +14,9 @@ import java.util.regex.Pattern;
  */
 public class Modifiers {
 
-    public static Function<List<Object>, Function> default1 = objects -> {
+    public static Function1<List<Object>, Function1> default1 = objects -> {
         final Object defaultValue = objects.get(0);
-        return (Function<FunctionKeeper, Object>) (wrapper) -> {
+        return (Function1<FunctionKeeper, Object>) (wrapper) -> {
             if (LIVRUtils.isNoValue(wrapper.getValue())) {
                 wrapper.getFieldResultArr().add(defaultValue);
                 return "";
@@ -24,33 +25,33 @@ public class Modifiers {
         };
     };
 
-    public static Function<List<Object>, Function> trim = objects -> (Function<FunctionKeeper, Object>) (wrapper) -> {
+    public static Function1<List<Object>, Function1> trim = objects -> (Function1<FunctionKeeper, Object>) (wrapper) -> {
         if (LIVRUtils.isNoValue(wrapper.getValue()) || wrapper.getValue().getClass() == JSONObject.class) return "";
         wrapper.getFieldResultArr().add((wrapper.getValue() + "").trim());
 
         return "";
     };
 
-    public static Function<List<Object>, Function> to_lc = objects -> (Function<FunctionKeeper, Object>) (wrapper) -> {
+    public static Function1<List<Object>, Function1> to_lc = objects -> (Function1<FunctionKeeper, Object>) (wrapper) -> {
         if (LIVRUtils.isNoValue(wrapper.getValue()) || wrapper.getValue().getClass() == JSONObject.class) return "";
         wrapper.getFieldResultArr().add((wrapper.getValue() + "").toLowerCase());
 
         return "";
     };
 
-    public static Function<List<Object>, Function> to_uc = objects -> (Function<FunctionKeeper, Object>) (wrapper) -> {
+    public static Function1<List<Object>, Function1> to_uc = objects -> (Function1<FunctionKeeper, Object>) (wrapper) -> {
         if (LIVRUtils.isNoValue(wrapper.getValue()) || wrapper.getValue().getClass() == JSONObject.class) return "";
         wrapper.getFieldResultArr().add((wrapper.getValue() + "").toUpperCase());
 
         return "";
     };
 
-    public static Function<List<Object>, Function> remove = objects -> {
+    public static Function1<List<Object>, Function1> remove = objects -> {
         String escaped = Pattern.quote(objects.get(0) + "");
 
         String chars = "[" + escaped + "]";
 
-        return (Function<FunctionKeeper, Object>) (wrapper) -> {
+        return (Function1<FunctionKeeper, Object>) (wrapper) -> {
             if (LIVRUtils.isNoValue(wrapper.getValue()) || wrapper.getValue().getClass() == JSONObject.class) return "";
             wrapper.getFieldResultArr().add((wrapper.getValue() + "").replaceAll(chars, ""));
 
@@ -59,12 +60,12 @@ public class Modifiers {
     };
 
 
-    public static Function<List<Object>, Function> leave_only = objects -> {
+    public static Function1<List<Object>, Function1> leave_only = objects -> {
         String escaped = Pattern.quote(objects.get(0) + "");
 
         String chars = "[^" + escaped + "]";
 
-        return (Function<FunctionKeeper, Object>) (wrapper) -> {
+        return (Function1<FunctionKeeper, Object>) (wrapper) -> {
             if (LIVRUtils.isNoValue(wrapper.getValue()) || wrapper.getValue().getClass() == JSONObject.class) return "";
             wrapper.getFieldResultArr().add((wrapper.getValue() + "").replaceAll(chars, ""));
 

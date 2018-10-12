@@ -1,16 +1,19 @@
 package livr;
 
+import kotlin.jvm.functions.Function1;
 import livr.Rules.*;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static livr.Rules.Numeric.max_number;
+
 /**
  * Created by vladislavbaluk on 9/29/2017.
  */
 public class LIVR {
-    static Map<String, Function> rules = new HashMap<>();
+    static Map<String, Function1<?,?>> rules = new HashMap<>();
 
     static {
         rules.put("required", CommonRules.required);

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/java-validator-livr.iml" filepath="$PROJECT_DIR$/java-validator-livr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/java-validator-livr_main.iml" filepath="$PROJECT_DIR$/.idea/modules/java-validator-livr_main.iml" group="java-validator-livr" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/java-validator-livr_test.iml" filepath="$PROJECT_DIR$/.idea/modules/java-validator-livr_test.iml" group="java-validator-livr" />
+    </modules>
+  </component>
+</project>

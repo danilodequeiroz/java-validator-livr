@@ -1,6 +1,7 @@
 package livr;
 
 import com.google.common.collect.Lists;
+import kotlin.jvm.functions.Function1;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -14,17 +15,17 @@ import java.util.function.Function;
  * Created by vladislavbaluk on 9/29/2017.
  */
 public class Validator {
-    static Map<String, Function> DEFAULT_RULES = new HashMap<>();
+    static Map<String, Function1> DEFAULT_RULES = new HashMap<>();
     JSONObject livrRules = new JSONObject();
     Map<String, List<FunctionKeeper>> validators;
-    Map<String, Function> validatorBuilders;
+    Map<String, Function1> validatorBuilders;
     JSONObject errors;
     boolean isPrepared = false;
     boolean isAutoTrim = false;
     private static JSONParser parser = new JSONParser();
 
 
-    public Validator(Map<String, Function> defaultRules) {
+    public Validator(Map<String, Function1> defaultRules) {
         DEFAULT_RULES = defaultRules;
     }
 
@@ -59,12 +60,12 @@ public class Validator {
     public Validator() {
     }
 
-    public Validator registerDefaultRules(Map<String, Function> rules) {
+    public Validator registerDefaultRules(Map<String, Function1<?,?>> rules) {
         DEFAULT_RULES.putAll(rules);
         return this;
     }
 
-    public Map<String, Function> getDefaultRules() {
+    public Map<String, Function1> getDefaultRules() {
         return DEFAULT_RULES;
     }
 
@@ -74,7 +75,7 @@ public class Validator {
         DEFAULT_RULES.put(name, _buildAliasedRule(alias));
     }
 
-    Function _buildAliasedRule(JSONObject alias) throws IOException {
+    Function1 _buildAliasedRule(JSONObject alias) throws IOException {
         if (((String) alias.get("name")).isEmpty()) throw new IOException("Alias name required");
         if (alias.get("rules") == null) throw new IOException("Alias rules required");
 
@@ -82,11 +83,11 @@ public class Validator {
         Object rules = alias.get("rules");
         livr.put("value", rules);
 
-        Function<List<Object>, Function> aliasFunction = objects -> {
-            Map<String, Function> ruleBuilders = (Map<String, Function>) ((objects.size() > 1) ? objects.get(1) : objects.get(0));
+        Function1<List<Object>, Function1> aliasFunction = objects -> {
+            Map<String, Function1> ruleBuilders = (Map<String, Function1>) ((objects.size() > 1) ? objects.get(1) : objects.get(0));
             try {
                 Validator validator = new Validator(ruleBuilders).init(livr, false).prepare();
-                return (Function<FunctionKeeper, Object>) (wrapper) -> {
+                return (Function1<FunctionKeeper, Object>) (wrapper) -> {
                     try {
                         JSONObject json = new JSONObject();
                         json.put("value", wrapper.getValue());
@@ -180,7 +181,7 @@ public class Validator {
                 v.setFieldResultArr(new ArrayList<>());
                 v.setValue(result.get(k) != null ? result.get(k) : value);
                 v.setArgs(toMap(finalData));
-                Object errCode = v.getFunction().apply(v);
+                Object errCode = v.getFunction().invoke(v);
                 if (errCode != null && !errCode.toString().isEmpty()) {
                     errors.put(k, errCode);
                     break;
@@ -206,7 +207,7 @@ public class Validator {
         return this.errors;
     }
 
-    public Validator registerRules(Map<String, Function> rules) {
+    public Validator registerRules(Map<String, Function1> rules) {
         validatorBuilders.putAll(rules);
         return this;
     }
@@ -221,7 +222,7 @@ public class Validator {
         this.validatorBuilders.put(name, _buildAliasedRule(alias));
     }
 
-    public Map<String, Function> getRules() {
+    public Map<String, Function1> getRules() {
         return this.validatorBuilders;
     }
 
@@ -262,10 +263,10 @@ public class Validator {
             throw new IOException("Rule [" + name + "] not registered");
         }
 
-        Function func = this.validatorBuilders.get(name);
+        Function1 func = this.validatorBuilders.get(name);
 
         args.add(this.getRules());
-        func = (Function) func.apply(args);
+        func = (Function1) func.invoke(args);
 
         return new FunctionKeeper(null, func);
     }

@@ -1,13 +1,13 @@
 package livr.Rules;
 
 import com.google.common.collect.Lists;
+import kotlin.jvm.functions.Function1;
 import livr.FunctionKeeper;
 import livr.LIVRUtils;
 import org.json.simple.JSONArray;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public class StringRules {
 
-    public static Function<List<Object>, Function> string = objects -> (Function<FunctionKeeper, Object>) (wrapper) -> {
+    public static Function1<List<Object>, Function1> string = objects -> (Function1<FunctionKeeper, Object>) (wrapper) -> {
         if (wrapper.getValue() == null || (wrapper.getValue() + "").equals("")) return "";
         if (!LIVRUtils.isPrimitiveValue(wrapper.getValue())) return "FORMAT_ERROR";
 
@@ -24,10 +24,10 @@ public class StringRules {
         return "";
     };
 
-    public static Function<List<Object>, Function> eq = objects -> {
+    public static Function1<List<Object>, Function1> eq = objects -> {
         Object allowedValue = objects.get(0);
 
-        return (Function<FunctionKeeper, Object>) (wrapper) -> {
+        return (Function1<FunctionKeeper, Object>) (wrapper) -> {
             if (wrapper.getValue() == null || (wrapper.getValue() + "").equals("")) return "";
             if (!LIVRUtils.isPrimitiveValue(wrapper.getValue())) return "FORMAT_ERROR";
 
@@ -42,10 +42,10 @@ public class StringRules {
     };
 
 
-    public static Function<List<Object>, Function> one_of = objects -> {
+    public static Function1<List<Object>, Function1> one_of = objects -> {
         final List<Object> allowedValues = Lists.newArrayList(((JSONArray) objects.get(0)).toArray());
 
-        return (Function<FunctionKeeper, Object>) (FunctionKeeper wrapper) -> {
+        return (Function1<FunctionKeeper, Object>) (FunctionKeeper wrapper) -> {
             List<String> allowedStrValues = allowedValues.stream().map(obj -> String.valueOf(obj)).collect(Collectors.toList());
             if (wrapper.getValue() == null || (wrapper.getValue() + "").equals("")) return "";
             if (!LIVRUtils.isPrimitiveValue(wrapper.getValue())) return "FORMAT_ERROR";
@@ -60,10 +60,10 @@ public class StringRules {
         };
     };
 
-    public static Function<List<Object>, Function> max_length = objects -> {
+    public static Function1<List<Object>, Function1> max_length = objects -> {
         final Long maxLength = Long.valueOf(objects.get(0) + "");
 
-        return (Function<FunctionKeeper, Object>) (FunctionKeeper wrapper) -> {
+        return (Function1<FunctionKeeper, Object>) (FunctionKeeper wrapper) -> {
             if (wrapper.getValue() == null || (wrapper.getValue() + "").equals("")) return "";
             if (!LIVRUtils.isPrimitiveValue(wrapper.getValue())) return "FORMAT_ERROR";
 
@@ -74,10 +74,10 @@ public class StringRules {
         };
     };
 
-    public static Function<List<Object>, Function> min_length = objects -> {
+    public static Function1<List<Object>, Function1> min_length = objects -> {
         final Long minLength = Long.valueOf(objects.get(0) + "");
 
-        return (Function<FunctionKeeper, Object>) (FunctionKeeper wrapper) -> {
+        return (Function1<FunctionKeeper, Object>) (FunctionKeeper wrapper) -> {
             if (wrapper.getValue() == null || (wrapper.getValue() + "").equals("")) return "";
             if (!LIVRUtils.isPrimitiveValue(wrapper.getValue())) return "FORMAT_ERROR";
 
@@ -88,10 +88,10 @@ public class StringRules {
         };
     };
 
-    public static Function<List<Object>, Function> length_equal = objects -> {
+    public static Function1<List<Object>, Function1> length_equal = objects -> {
         final Long length = Long.valueOf(objects.get(0) + "");
 
-        return (Function<FunctionKeeper, Object>) (FunctionKeeper wrapper) -> {
+        return (Function1<FunctionKeeper, Object>) (FunctionKeeper wrapper) -> {
             if (wrapper.getValue() == null || (wrapper.getValue() + "").equals("")) return "";
             if (!LIVRUtils.isPrimitiveValue(wrapper.getValue())) return "FORMAT_ERROR";
 
@@ -105,12 +105,12 @@ public class StringRules {
         };
     };
 
-    public static Function<List<Object>, Function> length_between = objects -> {
+    public static Function1<List<Object>, Function1> length_between = objects -> {
         Iterator it = ((JSONArray) objects.get(0)).iterator();
         final Long minLength = Long.valueOf(it.next() + "");
         final Long maxLength = Long.valueOf(it.next() + "");
 
-        return (Function<FunctionKeeper, Object>) (FunctionKeeper wrapper) -> {
+        return (Function1<FunctionKeeper, Object>) (FunctionKeeper wrapper) -> {
             if (wrapper.getValue() == null || (wrapper.getValue() + "").equals("")) return "";
             if (!LIVRUtils.isPrimitiveValue(wrapper.getValue())) return "FORMAT_ERROR";
 
@@ -124,7 +124,7 @@ public class StringRules {
     };
 
 
-    public static Function<List<Object>, Function> like = objects -> {
+    public static Function1<List<Object>, Function1> like = objects -> {
         String pattern;
         boolean isIgnoreCase;
         if (objects.get(0).getClass() == JSONArray.class) {
@@ -136,7 +136,7 @@ public class StringRules {
             isIgnoreCase = false;
         }
 
-        return (Function<FunctionKeeper, Object>) (FunctionKeeper wrapper) -> {
+        return (Function1<FunctionKeeper, Object>) (FunctionKeeper wrapper) -> {
             if (wrapper.getValue() == null || (wrapper.getValue() + "").equals("")) return "";
             if (!LIVRUtils.isPrimitiveValue(wrapper.getValue())) return "FORMAT_ERROR";
 

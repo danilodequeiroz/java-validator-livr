@@ -1,24 +1,25 @@
 package livr;
 
 
+import kotlin.jvm.functions.Function1;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 
 /**
  * Created by vladislavbaluk on 10/3/2017.
  */
 public class FunctionKeeper {
-    public FunctionKeeper(Map args, Function<FunctionKeeper, Object> function) {
+    public FunctionKeeper(Map args, Function1<FunctionKeeper, Object> function) {
         this.args = args;
         this.function = function;
     }
 
     private Object value;
     private Map args;
-    private Function<FunctionKeeper, Object> function;
+    private Function1<FunctionKeeper, Object> function;
     private List<Object> fieldResultArr = new ArrayList<>();
 
     public Map getArgs() {
@@ -29,11 +30,11 @@ public class FunctionKeeper {
         this.args = args;
     }
 
-    public Function<FunctionKeeper, Object> getFunction() {
+    public Function1<FunctionKeeper, Object> getFunction() {
         return function;
     }
 
-    public void setFunction(Function<FunctionKeeper, Object> function) {
+    public void setFunction(Function1<FunctionKeeper, Object> function) {
         this.function = function;
     }
 
