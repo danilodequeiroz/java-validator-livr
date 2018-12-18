@@ -34,7 +34,7 @@ object KSpecial {
             if (!LIVRUtils.isPrimitiveValue(wrapper.value)) return "FORMAT_ERROR"
             val value = wrapper.value.toString() + ""
 
-            return if (value != wrapper.args[field]) "FIELDS_NOT_EQUAL" else ""
+            return if (value != wrapper.args!![field]) "FIELDS_NOT_EQUAL" else ""
         }
     }
 

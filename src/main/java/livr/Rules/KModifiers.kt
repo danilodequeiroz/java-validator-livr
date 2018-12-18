@@ -25,7 +25,7 @@ object KModifiers {
 
     var trim = fun (objects: List<Any>): Function1<FunctionKeeper, Any> {
         return fun(wrapper: FunctionKeeper) : Any{
-            if (LIVRUtils.isNoValue(wrapper.value) || wrapper.value.javaClass == JSONObject::class.java) return ""
+            if (LIVRUtils.isNoValue(wrapper.value) || wrapper.value!!.javaClass == JSONObject::class.java) return ""
             wrapper.fieldResultArr.add((wrapper.value.toString() + "").trim { it <= ' ' })
 
             return ""
@@ -34,7 +34,7 @@ object KModifiers {
 
     var to_lc = fun (objects: List<Any>): Function1<FunctionKeeper, Any> {
         return fun(wrapper: FunctionKeeper) : Any{
-            if (LIVRUtils.isNoValue(wrapper.value) || wrapper.value.javaClass == JSONObject::class.java) return ""
+            if (LIVRUtils.isNoValue(wrapper.value) || wrapper.value!!.javaClass == JSONObject::class.java) return ""
             wrapper.fieldResultArr.add((wrapper.value.toString() + "").toLowerCase())
 
             return ""
@@ -43,7 +43,7 @@ object KModifiers {
 
     var to_uc = fun (objects: List<Any>): Function1<FunctionKeeper, Any> {
         return fun(wrapper: FunctionKeeper) : Any{
-            if (LIVRUtils.isNoValue(wrapper.value) || wrapper.value.javaClass == JSONObject::class.java) return ""
+            if (LIVRUtils.isNoValue(wrapper.value) || wrapper.value!!.javaClass == JSONObject::class.java) return ""
             wrapper.fieldResultArr.add((wrapper.value.toString() + "").toUpperCase())
 
             return ""
@@ -55,7 +55,7 @@ object KModifiers {
 
         val chars = "[$escaped]"
         return fun(wrapper: FunctionKeeper): Any? {
-            if (LIVRUtils.isNoValue(wrapper.value) || wrapper.value.javaClass == JSONObject::class.java) return ""
+            if (LIVRUtils.isNoValue(wrapper.value) || wrapper.value!!.javaClass == JSONObject::class.java) return ""
             wrapper.fieldResultArr.add((wrapper.value.toString() + "").replace(chars.toRegex(), ""))
 
             return ""
@@ -67,7 +67,7 @@ object KModifiers {
         val chars = "[^$escaped]"
 
         return fun(wrapper: FunctionKeeper): Any? {
-            if (LIVRUtils.isNoValue(wrapper.value) || wrapper.value.javaClass == JSONObject::class.java) return ""
+            if (LIVRUtils.isNoValue(wrapper.value) || wrapper.value!!.javaClass == JSONObject::class.java) return ""
             wrapper.fieldResultArr.add((wrapper.value.toString() + "").replace(chars.toRegex(), ""))
 
             return ""

@@ -10,7 +10,7 @@ class RulesReplacementTest extends Specification {
 
     def "Validate data with registered rules"() {
         when:
-        Validator validator = LIVR.validator();
+        Validator validator = KLIVR.INSTANCE.validator();
         def defaultRules = validator.getDefaultRules();
         def originalRules = new HashMap<>()
         def newRules = new HashMap<>();
@@ -18,7 +18,7 @@ class RulesReplacementTest extends Specification {
         for (String key : defaultRules.keySet()) {
             def ruleBuilder = defaultRules.get(key);
             originalRules.put(key, ruleBuilder);
-            newRules.put(key, MyFuncClass.patchRule(key, ruleBuilder));
+            newRules.put(key, KMyFuncClass.INSTANCE.patchRule(key, ruleBuilder));
         }
 
         validator.registerDefaultRules(newRules);

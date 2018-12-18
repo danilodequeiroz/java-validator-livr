@@ -17,7 +17,7 @@ class BaseFuncTest extends Specification {
             def rules = parser.parse(json.rules)
             def input = parser.parse(json.input);
             json.output = parser.parse(json.output);
-            def validator = LIVR.validator().init(rules, false);
+            def validator = KLIVR.INSTANCE.validator().init(rules, false);
             def result = validator.validate(input);
 
             json.result = result;
@@ -43,7 +43,7 @@ class BaseFuncTest extends Specification {
             def rules = parser.parse(json.rules)
             def input = parser.parse(json.input);
             json.errors = parser.parse(json.errors);
-            def validator = LIVR.validator().init(rules, false);
+            def validator = KLIVR.INSTANCE.validator().init(rules, false);
             def result = validator.validate(input);
 
             json.result = result;
@@ -67,7 +67,7 @@ class BaseFuncTest extends Specification {
             def input = parser.parse(json.input);
             json.output = parser.parse(json.output);
             json.aliases = parser.parse(json.aliases);
-            def validator = LIVR.validator().init(rules, false);
+            def validator = KLIVR.INSTANCE.validator().init(rules, false);
 
             for (alias in json.aliases) {
                 validator.registerAliasedRule(alias);
@@ -96,7 +96,7 @@ class BaseFuncTest extends Specification {
             def input = parser.parse(json.input);
             json.errors = parser.parse(json.errors);
             json.aliases = parser.parse(json.aliases);
-            def validator = LIVR.validator().init(rules, false);
+            def validator = KLIVR.INSTANCE.validator().init(rules, false);
 
             for (alias in json.aliases) {
                 validator.registerAliasedRule(alias);
@@ -116,7 +116,7 @@ class BaseFuncTest extends Specification {
 
     def "null check test"() {
         when:
-        def validator = LIVR.validator().prepare();
+        def validator = KLIVR.INSTANCE.validator().prepare();
         def result = validator.validate(null);
         then:
         assert result == null;

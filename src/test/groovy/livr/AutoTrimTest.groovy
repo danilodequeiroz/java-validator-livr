@@ -9,7 +9,8 @@ import spock.lang.Specification
 class AutoTrimTest extends Specification {
     def "NEGATIVE: Validate data with automatic trim"() {
         when:
-        def validator = LIVR.validator().init("{" +
+
+        def validator = KLIVR.INSTANCE.validator().init("{" +
                 "                           \"code\":     \"required\"," +
                 "                          \"password\": [\"required\", { \"min_length\": 3 }]," +
                 "                           \"address\":  { \"nested_object\": {" +

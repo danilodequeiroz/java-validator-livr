@@ -12,10 +12,10 @@ class CustomFiltersTest extends Specification {
     def "'Validate data with registered rules'"() {
         when:
         Map rules = new HashMap();
-        rules.put("my_trim", MyFuncClass.my_trim);
-        rules.put("my_lc", MyFuncClass.my_lc);
-        rules.put("my_ucfirst", MyFuncClass.my_ucfirst);
-        def validator = LIVR.validator().registerDefaultRules(rules).init("{\"word1\": [\"my_trim\", \"my_lc\", \"my_ucfirst\"]," +
+        rules.put("my_trim", KMyFuncClass.my_trim);
+        rules.put("my_lc", KMyFuncClass.my_lc);
+        rules.put("my_ucfirst", KMyFuncClass.my_ucfirst);
+        def validator = KLIVR.INSTANCE.validator().registerDefaultRules(rules).init("{\"word1\": [\"my_trim\", \"my_lc\", \"my_ucfirst\"]," +
                 "                \"word2\": [\"my_trim\", \"my_lc\"]," +
                 "                \"word3\": [\"my_ucfirst\"] }", false);
 
